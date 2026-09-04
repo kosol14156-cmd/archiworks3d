@@ -45,7 +45,8 @@ export default function App() {
   // Secret Click State
   const [clickCount, setClickCount] = useState(0);
 
-  // Form Upload State
+  // Form Upload & Edit State
+  const [editingProjectId, setEditingProjectId] = useState(null);
   const [pTitle, setPTitle] = useState("");
   const [pPrice, setPPrice] = useState("");
   const [pCategory, setPCategory] = useState("Modern Villa");
@@ -122,6 +123,25 @@ export default function App() {
     }
   };
 
+  // មុខងារសម្រាប់ទាញទិន្នន័យគម្រោងចាស់មកដាក់ក្នុង Form ពេលចុច Edit
+  const handleEditProject = (project) => {
+    setEditingProjectId(project.id);
+    setPTitle(project.title || "");
+    setPPrice(project.price || "");
+    setPCategory(project.category || "Modern Villa");
+    setPTelegram(project.telegram || "");
+    setPDesc(project.descKm || project.description || "");
+    setPCode(project.code || "");
+    setPLand(project.land || "");
+    setPBuiltArea(project.builtArea || "");
+    setPBeds(project.beds || "");
+    setPBaths(project.baths || "");
+    setPParking(project.parking || "");
+    setUploadedImageBase64(project.image || "");
+    setFileNameDisplay(project.image ? "✓ រូបភាពចាស់ត្រូវបានរក្សាទុក" : "");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const handleProjectSubmit = (e) => {
     e.preventDefault();
     if (!uploadedImageBase64) {
@@ -129,29 +149,60 @@ export default function App() {
       return;
     }
 
-    const newProj = {
-      id: Date.now(),
-      title: pTitle,
-      category: pCategory,
-      price: pPrice,
-      image: uploadedImageBase64,
-      descKm: pDesc,
-      descEn: pDesc,
-      telegram: pTelegram || "yourusername",
-      code: pCode || "P01",
-      land: pLand,
-      builtArea: pBuiltArea,
-      beds: pBeds,
-      baths: pBaths,
-      parking: pParking,
-    };
+    if (editingProjectId) {
+      // ករណីកែប្រែគម្រោងដែលមានស្រាប់ (Update)
+      setProjects(
+        projects.map((p) =>
+          p.id === editingProjectId
+            ? {
+                ...p,
+                title: pTitle,
+                category: pCategory,
+                price: pPrice,
+                image: uploadedImageBase64,
+                descKm: pDesc,
+                descEn: pDesc,
+                telegram: pTelegram || "yourusername",
+                code: pCode || "P01",
+                land: pLand,
+                builtArea: pBuiltArea,
+                beds: pBeds,
+                baths: pBaths,
+                parking: pParking,
+              }
+            : p,
+        ),
+      );
+      setEditingProjectId(null);
+      alert("✓ កែប្រែគម្រោងបានជោគជ័យ!");
+    } else {
+      // ករណីបន្ថែមគម្រោងថ្មី (Create)
+      const newProj = {
+        id: Date.now(),
+        title: pTitle,
+        category: pCategory,
+        price: pPrice,
+        image: uploadedImageBase64,
+        descKm: pDesc,
+        descEn: pDesc,
+        telegram: pTelegram || "yourusername",
+        code: pCode || "P01",
+        land: pLand,
+        builtArea: pBuiltArea,
+        beds: pBeds,
+        baths: pBaths,
+        parking: pParking,
+      };
 
-    setProjects([newProj, ...projects]);
+      setProjects([newProj, ...projects]);
+      alert("✓ បញ្ចូលគម្រោងថ្មីបានជោគជ័យ!");
+    }
+
     setPSignDefaults();
-    alert("✓ បញ្ចូលគម្រោងថ្មីបានជោគជ័យ!");
   };
 
   const setPSignDefaults = () => {
+    setEditingProjectId(null);
     setPTitle("");
     setPPrice("");
     setPCategory("Modern Villa");
@@ -284,6 +335,7 @@ export default function App() {
             setPriceFilter={setPriceFilter}
             filteredProjects={filteredProjects}
             deleteProject={deleteProject}
+            handleEditProject={handleEditProject}
           />
         )}
 
