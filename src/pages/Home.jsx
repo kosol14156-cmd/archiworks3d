@@ -45,18 +45,18 @@ export default function Home({ currentLang, switchTab }) {
           <div className="lg:col-span-5">
             <div className="relative rounded-2xl overflow-hidden border border-amber-500/30 bg-black/60 shadow-2xl group aspect-[4/3]">
               <video
-                src="/hero-tour.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="auto"
-                className="w-full h-full object-cover"
-                onEnded={(e) => {
-                  e.target.currentTime = 0;
-                  e.target.play();
-                }}
-              ></video>
+  src={`${import.meta.env.BASE_URL}hero-tour.mp4`}
+  autoPlay
+  loop
+  muted
+  playsInline
+  preload="auto"
+  className="w-full h-full object-cover"
+  onEnded={(e) => {
+    e.target.currentTime = 0;
+    e.target.play();
+  }}
+></video>
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none"></div>
               <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between pointer-events-none">
                 <div className="flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-gray-700/60">
