@@ -45,7 +45,7 @@ export default function Home({ currentLang, switchTab }) {
           <div className="lg:col-span-5">
             <div className="relative rounded-2xl overflow-hidden border border-amber-500/30 bg-black/60 shadow-2xl group aspect-[4/3]">
               <video
-                src="hero-video.mp4"
+                src="/hero-tour.mp4"
                 autoPlay
                 loop
                 muted
