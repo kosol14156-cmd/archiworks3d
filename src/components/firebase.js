@@ -1,22 +1,24 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth } from "firebase/auth"; // បន្ថែមបន្ទាត់នេះសម្រាប់ Authentication
+import { getAuth } from "firebase/auth";
 
-// Your web app's Firebase configuration
+// Firebase configuration ថ្មីសម្រាប់ ks-archi
 const firebaseConfig = {
-  apiKey: "AIzaSyAUvJLH6-842wGh-DYWPZoUxdlbk3TkcZk",
-  authDomain: "test-83622.firebaseapp.com",
-  projectId: "test-83622",
-  storageBucket: "test-83622.firebasestorage.app",
-  messagingSenderId: "214909862005",
-  appId: "1:214909862005:web:e142a220ccca3bd322783c",
-  measurementId: "G-Y6112RS544",
+  apiKey: "AIzaSyD071NThwA5_Kwe7drZnVlxAJ-SeeSaWrk",
+  authDomain: "ks-archi.firebaseapp.com",
+  projectId: "ks-archi",
+  storageBucket: "ks-archi.firebasestorage.app",
+  messagingSenderId: "937068032559",
+  appId: "1:937068032559:web:339d6f610997134be90cda",
+  measurementId: "G-P7PHMJ2QVY"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 
-// Export auth យកទៅប្រើប្រាស់ក្នុង LoginModal.jsx
+// Initialize Analytics (ដំណើរការតែលើ Browser ប៉ុណ្ណោះ)
+export const analytics = typeof window !== "undefined" ? getAnalytics(app) : null;
+
+// Export auth សម្រាប់យកទៅប្រើប្រាស់ក្នុង LoginModal.jsx
 export const auth = getAuth(app);
+export default app;

@@ -66,28 +66,21 @@ export default function App() {
   }, [projects]);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-    });
-    return () => unsubscribe();
-  }, []);
-
+  const unsubscribe = onAuthStateChanged(auth, (user) => {
+    setCurrentUser(user);
+    setIsAdmin(!!user); // បើមាន user Login នោះ isAdmin = true, បើ logout នោះ isAdmin = false
+  });
+  return () => unsubscribe();
+}, []);
   const switchTab = (tab) => {
     setCurrentTab(tab);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleSecretClick = () => {
-    setClickCount((prev) => {
-      const next = prev + 1;
-      if (next >= 3) {
-        promptAdminLogin();
-        return 0;
-      }
-      setTimeout(() => setClickCount(0), 1000);
-      return next;
-    });
+ const handleSecretClick = () => {
+    setIsLoginModalOpen(true);
   };
+        
 
   const promptAdminLogin = () => {
     if (isAdmin) {
@@ -281,14 +274,18 @@ export default function App() {
     <div className="bg-[#0e1015] text-gray-200 antialiased selection:bg-amber-500 selection:text-black min-h-screen flex flex-col justify-between font-sans">
       {/* Header Component */}
       <Header
-        currentTab={currentTab}
-        switchTab={switchTab}
-        currentLang={currentLang}
-        toggleLanguage={toggleLanguage}
-        toggleAuthModal={toggleAuthModal}
-        currentUser={currentUser}
-        handleSecretClick={handleSecretClick}
-      />
+  currentTab={currentTab}
+  switchTab={switchTab}
+  currentLang={currentLang}
+  toggleLanguage={toggleLanguage}
+  handleSecretClick={handleSecretClick}
+  currentUser={currentUser}
+  handleLogout={async () => {
+    await signOut(auth);
+    setCurrentUser(null);
+    setIsAdmin(false);
+  }}
+/>
 
       {/* Main Container */}
       <main className="max-w-7xl mx-auto px-6 py-10 flex-1 w-full">

@@ -300,19 +300,41 @@ export default function Projects({
               className="bg-[#111622] rounded-2xl overflow-hidden border border-gray-800 hover:border-amber-500/50 hover:shadow-2xl transition-all duration-500 flex flex-col justify-between group"
             >
               <div>
-                <div className="relative h-60 overflow-hidden bg-black/50">
-                  <img
-                    src={p.image}
-                    alt={p.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <span className="absolute top-3 right-3 bg-black/75 backdrop-blur-md text-amber-400 font-extrabold px-3 py-1 text-sm rounded-lg border border-amber-500/30">
-                    {p.price}
-                  </span>
-                  <span className="absolute top-3 left-3 bg-black/75 backdrop-blur-md text-gray-300 text-[11px] font-medium px-2.5 py-1 rounded-lg border border-gray-700/60 uppercase">
-                    {p.category}
-                  </span>
-                </div>
+                <div className="relative w-full aspect-video overflow-hidden bg-black/50">
+                <img
+                  src={p.image}
+                  alt={p.title}
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                />
+
+                {/* ស្រទាប់ Brush / Fade រលាយបាតរូបភាព */}
+                <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#111622] via-[#111622]/60 to-transparent pointer-events-none" />
+
+                {(() => {
+                  const isFree =
+                    String(p.price).trim().toLowerCase() === "free" ||
+                    Number(p.price) === 0;
+
+                  return (
+                    <span
+                className={`absolute top-3 right-3 backdrop-blur-md font-extrabold px-3 py-1 rounded-lg text-xs transition ${
+                  isFree
+                    ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/40"
+                    : "bg-black/75 text-amber-400 border border-amber-500/30"
+                }`}
+              >
+                {isFree
+                  ? p.price
+                  : typeof p.price === "number" || (!isNaN(p.price) && p.price !== "")
+                  ? `$${p.price}`
+                  : p.price}
+              </span>
+                  );
+                })()}
+                <span className="absolute top-3 left-3 bg-black/75 backdrop-blur-md text-gray-300 text-[11px] font-medium px-2.5 py-1 rounded-lg border border-gray-700">
+                  {p.category}
+                </span>
+              </div>
 
                 <div className="p-5 space-y-3">
                   <div>
@@ -324,50 +346,84 @@ export default function Projects({
                     </h3>
                   </div>
 
-                  <div className="space-y-1.5 pt-2 border-t border-gray-800 text-xs text-gray-300">
+                  <div className="space-y-2 pt-3 border-t border-gray-800 text-xs text-gray-300">
                     {p.land && (
-                      <div>
-                        Land: <strong className="text-white">{p.land}</strong>
+                      <div className="flex items-center gap-2">
+                        <svg className="w-3.5 h-3.5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                        </svg>
+                        <span>Land: <strong className="text-white font-medium">{p.land}</strong></span>
                       </div>
                     )}
                     {p.builtArea && (
-                      <div>
-                        Built Area:{" "}
-                        <strong className="text-white">{p.builtArea}</strong>
+                      <div className="flex items-center gap-2">
+                        <svg className="w-3.5 h-3.5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        <span>Built Area: <strong className="text-white font-medium">{p.builtArea}</strong></span>
                       </div>
                     )}
-                    {p.beds && (
-                      <div>
-                        Bedrooms:{" "}
-                        <strong className="text-white">{p.beds}</strong>
-                      </div>
-                    )}
+                    {/* Bedrooms */}
+                  {(p.beds || p.bedrooms) && (
+                    <div className="flex items-center gap-2">
+                      <svg className="w-4 h-4 text-gray-400 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 7v11m0-4h18m0-7v11M3 11h18M7 8a2 2 0 100-4 2 2 0 000 4z" />
+                      </svg>
+                      <span>Bedrooms: <strong className="text-white font-medium">{p.beds || p.bedrooms}</strong></span>
+                    </div>
+                  )}
+
+                  {/* Parking */}
+                  {p.parking && (
+                    <div className="flex items-center gap-2">
+                      <svg className="w-4 h-4 text-gray-400 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0m-14-4l1.5-5A2 2 0 018.4 6h7.2a2 2 0 011.9 1.5L19 13m-16 0h16a2 2 0 012 2v2H3v-2a2 2 0 012-2z" />
+                      </svg>
+                      <span>Parking spaces: <strong className="text-white font-medium">{p.parking}</strong></span>
+                    </div>
+                  )}
+
+                  {/* Bathrooms */}
+                  <div className="flex items-center gap-2">
+                    <svg className="w-4 h-4 text-gray-400 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v7a4 4 0 004 4h8a2 2 0 002-2V9a2 2 0 00-2-2H8M7 19l-1 2m10-2l1 2M8 15h8" />
+                    </svg>
+                    <span>Bathrooms: <strong className="text-white font-medium">{p.bathrooms ?? p.baths ?? p.bathroom ?? 0}</strong></span>
+                  </div>
+                   
                   </div>
                 </div>
-              </div>
+             </div>
 
               {/* Action Buttons: Payment & Admin Controls */}
-              <div className="p-5 pt-0 space-y-2">
+              <div className="p-5 pt-0 flex items-center gap-2">
                 <button
                   onClick={() => setSelectedProjectForPayment(p)}
-                  className="w-full py-2.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs tracking-wide transition-all shadow-md shadow-amber-500/20 flex items-center justify-center gap-1.5"
+                  className="flex-1 py-2.5 px-3 rounded-lg bg-amber-500 hover:bg-amber-400 text-black font-bold text-xs flex items-center justify-center gap-1 transition shadow-sm"
                 >
-                  <span>💳 {buyBtnText}</span>
+                  <span>{buyBtnText}</span>
+                  <span className="text-sm font-bold">&rarr;</span>
                 </button>
 
                 {(isAdmin || currentUser) && (
-                  <div className="flex gap-2">
+                  <div className="flex items-center gap-1.5 shrink-0">
                     <button
                       onClick={() => handleEditProject && handleEditProject(p)}
-                      className="flex-1 py-2 rounded-lg bg-blue-600/20 hover:bg-blue-600/40 text-blue-400 border border-blue-500/30 text-xs font-semibold transition"
+                      className="p-2.5 rounded-lg bg-blue-600/20 hover:bg-blue-600 text-blue-400 hover:text-white border border-blue-500/30 transition flex items-center justify-center"
+                      title="Edit"
                     >
-                      ✏️ Edit
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                      </svg>
                     </button>
                     <button
                       onClick={() => deleteProject(p.id)}
-                      className="flex-1 py-2 rounded-lg bg-red-600/20 hover:bg-red-600/40 text-red-400 border border-red-500/30 text-xs font-semibold transition"
+                      className="p-2.5 rounded-lg bg-red-600/20 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/30 transition flex items-center justify-center"
+                      title="Delete"
                     >
-                      🗑️ Delete
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
                     </button>
                   </div>
                 )}

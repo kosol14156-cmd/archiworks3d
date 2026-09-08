@@ -5,8 +5,9 @@ export default function Header({
   switchTab,
   currentLang,
   toggleLanguage,
-  currentUser,
   handleSecretClick,
+  currentUser,
+  handleLogout,
 }) {
   return (
     <header className="sticky top-0 z-50 backdrop-blur-md bg-[#0e1015]/95 border-b border-gray-800">
@@ -16,7 +17,7 @@ export default function Header({
           <img
             src="https://i.pinimg.com/1200x/04/c7/d2/04c7d206bc9de1de84a2452f645a8472.jpg"
             alt="Logo"
-            onClick={handleSecretClick}
+            
             title="ArchiWorks 3D"
             className="w-11 h-11 rounded-full object-cover border border-amber-500/40 cursor-pointer select-none transition hover:scale-105"
             onError={(e) => (e.target.style.display = "none")}
@@ -81,6 +82,29 @@ export default function Header({
           >
             <span>{currentLang === "km" ? "🇰🇭 KH" : "🇬🇧 EN"}</span>
           </button>
+          {/* ប៊ូតុង Admin Login */}
+{currentUser ? (
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>{currentUser.email}</span>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="px-2.5 py-1.5 rounded-lg border border-red-500/40 text-red-400 hover:bg-red-500/10 text-xs font-medium transition"
+            >
+              Logout
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={handleSecretClick}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-amber-500/40 text-amber-400 hover:bg-amber-500/10 text-xs font-medium transition"
+            title="Admin Login"
+          >
+            Admin
+          </button>
+        )}
         </div>
       </div>
     </header>
